@@ -1,26 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import path from 'path';
+import React, { ReactNode } from 'react';
+import { createBrowserRouter, Router, RouterProvider } from 'react-router-dom';
+import { GoochShading } from './components/exercises/GoochShading/GoochShading';
+import { Navigation, pages } from './Navigation';
+
+const router = createBrowserRouter([
+  { path: '/', element: <Navigation /> },
+  ...pages.map(({ path, element }) => ({ path, element }))
+]);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
