@@ -1,7 +1,4 @@
-import path from 'path';
-import React, { ReactNode } from 'react';
-import { createBrowserRouter, Router, RouterProvider } from 'react-router-dom';
-import { GoochShading } from './components/exercises/GoochShading/GoochShading';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Navigation, pages } from './Navigation';
 
 const router = createBrowserRouter([

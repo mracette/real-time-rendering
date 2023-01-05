@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { GoochShading } from './components/exercises/GoochShading/GoochShading';
+import { GoochShading } from './components/exercises/5.1/GoochShading/GoochShading';
+import { LambertShading } from './components/exercises/5.2/LambertShading/LambertShading';
 
 interface Page {
   name: string;
@@ -15,6 +16,12 @@ export const pages: Page[] = [
     name: 'Gooch Shading',
     path: '/gooch-shading',
     element: <GoochShading />
+  },
+  {
+    chapter: '5.2',
+    name: 'Lambert Shading',
+    path: '/lambert-shading',
+    element: <LambertShading />
   }
 ];
 
