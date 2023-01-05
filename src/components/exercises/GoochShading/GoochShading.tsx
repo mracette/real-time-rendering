@@ -9,8 +9,7 @@ export const GoochShading = () => {
     <Canvas>
       <OrbitControls />
       <mesh>
-        <dodecahedronBufferGeometry />
-        <meshBasicMaterial color="red" />
+        <dodecahedronGeometry args={[1, 1]} />
         <rawShaderMaterial
           fragmentShader={Fragment}
           vertexShader={Vertex}
