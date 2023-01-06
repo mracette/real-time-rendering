@@ -10,6 +10,7 @@ varying vec3 vPosition;
 varying vec4 vColor;
 varying vec3 vNormal;
 
+// GLSL needs a fixed array size
 #define maxLights 10
 
 void main()	{

@@ -3,8 +3,8 @@ import { Canvas } from '@react-three/fiber';
 import { equilateralTriangle } from 'crco-utils';
 import { memo, useMemo } from 'react';
 import { Color, IUniform, RawShaderMaterial, Vector3 } from 'three';
-import Fragment from './LambertShading.frag';
-import Vertex from './LambertShading.vert';
+import Fragment from './LambertShadingPunctual.frag';
+import Vertex from './LambertShadingPunctual.vert';
 
 const surfaceColor = new Color('black');
 
@@ -31,7 +31,7 @@ const lights: BasicLight[] = [
   }
 ];
 
-export const LambertShading = () => {
+export const LambertShadingPunctual = () => {
   const uniforms = useMemo<Record<string, IUniform>>(
     () => ({
       color: { value: surfaceColor },

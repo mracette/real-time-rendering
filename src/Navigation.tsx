@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { GoochShading } from './components/exercises/5.1/GoochShading/GoochShading';
-import { LambertShading } from './components/exercises/5.2/LambertShading/LambertShading';
+import { LambertShadingDirectional } from './components/exercises/5.2/5.2.1/LambertShadingDirectional';
+import { LambertShadingPunctual } from './components/exercises/5.2/5.2.2/LambertShadingPunctual';
 
 interface Page {
   name: string;
@@ -18,10 +19,16 @@ export const pages: Page[] = [
     element: <GoochShading />
   },
   {
-    chapter: '5.2',
-    name: 'Lambert Shading',
-    path: '/lambert-shading',
-    element: <LambertShading />
+    chapter: '5.2.1',
+    name: 'Lambert Shading - Directional',
+    path: '/lambert-shading-directional',
+    element: <LambertShadingDirectional />
+  },
+  {
+    chapter: '5.2.2',
+    name: 'Lambert Shading - Punctual',
+    path: '/lambert-shading-punctual',
+    element: <LambertShadingPunctual />
   }
 ];
 
