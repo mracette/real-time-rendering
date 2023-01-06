@@ -3573,10 +3573,10 @@ crco-utils@2.0.30:
   resolved "https://registry.yarnpkg.com/crco-utils/-/crco-utils-2.0.30.tgz#54a401f91314270ef4c905f23ce4293b07548597"
   integrity sha512-WJz+i24YBLD8Ubd3KyynPP0OB32WUlNhDBDZT11HzJJ1Z/ZByuvhZVscpbUVl0ZnNy2oTGSjLPM1/86L74ytKA==
 
-crco-utils@^2.0.40:
-  version "2.0.40"
-  resolved "https://registry.yarnpkg.com/crco-utils/-/crco-utils-2.0.40.tgz#b1ba9de571624ceacaf2a14231316324231783a9"
-  integrity sha512-LwayXibSJaPopiNp0RBkPQmivU4QgytVAzJvU5MnSqqCDJesATU59EjrgprAmrr33jdGHoITSCInoGVDqM8T6Q==
+crco-utils@^2.0.41:
+  version "2.0.41"
+  resolved "https://registry.yarnpkg.com/crco-utils/-/crco-utils-2.0.41.tgz#00999bd3dd2a99473bf634d546cab385aefac028"
+  integrity sha512-mifgA6/1zSlWNy/Ff9lvikqdFhheNn7v4b/JCJSTtE2LGE3gFwvWkovqv9qx6kiOWStoxJpgzkOcb8NfGd6QQA==
   dependencies:
     crco-utils "2.0.30"
 

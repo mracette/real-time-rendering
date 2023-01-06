@@ -1,49 +1,57 @@
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
+import { equilateralTriangle } from 'crco-utils';
+import { memo, useMemo } from 'react';
 import { Color, IUniform, RawShaderMaterial, Vector3 } from 'three';
 import Fragment from './LambertShading.frag';
 import Vertex from './LambertShading.vert';
+
+const surfaceColor = new Color('black');
+
+// Flip for Y-up orientation
+const triangle = equilateralTriangle(0, 0, 3).map(([x, y]) => new Vector3(x, -y, 0));
 
 interface BasicLight {
   position: Vector3;
   color: Color;
 }
 
-const triangleSide = 3;
-const triangleHeight = (triangleSide * Math.sqrt(3)) / 2;
-const triangleCenter = triangleHeight / 3;
-
-const surfaceColor = new Color('black');
-
 const lights: BasicLight[] = [
   {
-    position: new Vector3(0, triangleHeight - triangleCenter, 0),
+    position: triangle[0],
     color: new Color(1, 0, 0)
   },
   {
-    position: new Vector3(-triangleSide / 2, -triangleCenter, 0),
+    position: triangle[1],
     color: new Color(0, 1, 0)
   },
   {
-    position: new Vector3(triangleSide / 2, -triangleCenter, 0),
+    position: triangle[2],
     color: new Color(0, 0, 1)
   }
 ];
 
-const uniforms: Record<string, IUniform> = {
-  color: { value: surfaceColor },
-  lightCount: { value: lights.length },
-  lightPositions: { value: lights.map(({ position }) => position.toArray()).flat(1) },
-  lightColors: { value: lights.map(({ color }) => color.toArray()).flat(1) }
-};
-
-const material = new RawShaderMaterial({
-  fragmentShader: Fragment,
-  vertexShader: Vertex,
-  uniforms
-});
-
 export const LambertShading = () => {
+  const uniforms = useMemo<Record<string, IUniform>>(
+    () => ({
+      color: { value: surfaceColor },
+      lightCount: { value: lights.length },
+      lightPositions: { value: lights.map(({ position }) => position.toArray()).flat(1) },
+      lightColors: { value: lights.map(({ color }) => color.toArray()).flat(1) }
+    }),
+    []
+  );
+
+  // Three.js doesn't support updating the uniforms object after the initial render, so if it changes we need to create a new material.
+  // Practically speaking, this allows code changes to the uniforms to be picked up by hot reloading.
+  const ShaderMaterial = memo(({ uniforms }: { uniforms: Record<string, IUniform> }) => (
+    <rawShaderMaterial
+      fragmentShader={Fragment}
+      vertexShader={Vertex}
+      uniforms={uniforms}
+    />
+  ));
+
   return (
     <Canvas>
       {lights.map(({ position, color }) => (
@@ -55,7 +63,7 @@ export const LambertShading = () => {
       <OrbitControls />
       <mesh>
         <sphereGeometry args={[1]} />
-        <primitive object={material} attach="material" />
+        <ShaderMaterial uniforms={uniforms} />
       </mesh>
     </Canvas>
   );
