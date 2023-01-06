@@ -3568,6 +3568,18 @@ cosmiconfig@^7, cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
+crco-utils@2.0.30:
+  version "2.0.30"
+  resolved "https://registry.yarnpkg.com/crco-utils/-/crco-utils-2.0.30.tgz#54a401f91314270ef4c905f23ce4293b07548597"
+  integrity sha512-WJz+i24YBLD8Ubd3KyynPP0OB32WUlNhDBDZT11HzJJ1Z/ZByuvhZVscpbUVl0ZnNy2oTGSjLPM1/86L74ytKA==
+
+crco-utils@^2.0.40:
+  version "2.0.40"
+  resolved "https://registry.yarnpkg.com/crco-utils/-/crco-utils-2.0.40.tgz#b1ba9de571624ceacaf2a14231316324231783a9"
+  integrity sha512-LwayXibSJaPopiNp0RBkPQmivU4QgytVAzJvU5MnSqqCDJesATU59EjrgprAmrr33jdGHoITSCInoGVDqM8T6Q==
+  dependencies:
+    crco-utils "2.0.30"
+
 create-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"

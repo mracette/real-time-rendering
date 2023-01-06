@@ -14,7 +14,7 @@ varying vec3 vNormal;
 
 void main()	{
 
-    vec3 normal = normalize(vNormal);
+    vec3 normal = normalize( vNormal );
     vec3 color = surfaceColor;
 
     for(int i = 0; i < maxLights; i++) {
@@ -22,7 +22,8 @@ void main()	{
         vec3 lightPosition = normalize(lightPositions[i]);
         vec3 lightColor = lightColors[i];
         float l = clamp(dot(normal, lightPosition), 0.0, 1.0);
-        color = mix(color, lightColor, l);
+        color = color + lightColor * l;
+        // color = mix(color, lightColor, l);
     }
 
 

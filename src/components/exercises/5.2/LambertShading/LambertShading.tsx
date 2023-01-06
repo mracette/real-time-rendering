@@ -1,81 +1,62 @@
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Color, Group, Mesh, MeshBasicMaterial, RawShaderMaterial, Vector3 } from 'three';
+import { Color, IUniform, RawShaderMaterial, Vector3 } from 'three';
 import Fragment from './LambertShading.frag';
 import Vertex from './LambertShading.vert';
 
+interface BasicLight {
+  position: Vector3;
+  color: Color;
+}
+
+const triangleSide = 3;
+const triangleHeight = (triangleSide * Math.sqrt(3)) / 2;
+const triangleCenter = triangleHeight / 3;
+
 const surfaceColor = new Color('black');
 
+const lights: BasicLight[] = [
+  {
+    position: new Vector3(0, triangleHeight - triangleCenter, 0),
+    color: new Color(1, 0, 0)
+  },
+  {
+    position: new Vector3(-triangleSide / 2, -triangleCenter, 0),
+    color: new Color(0, 1, 0)
+  },
+  {
+    position: new Vector3(triangleSide / 2, -triangleCenter, 0),
+    color: new Color(0, 0, 1)
+  }
+];
+
+const uniforms: Record<string, IUniform> = {
+  color: { value: surfaceColor },
+  lightCount: { value: lights.length },
+  lightPositions: { value: lights.map(({ position }) => position.toArray()).flat(1) },
+  lightColors: { value: lights.map(({ color }) => color.toArray()).flat(1) }
+};
+
+const material = new RawShaderMaterial({
+  fragmentShader: Fragment,
+  vertexShader: Vertex,
+  uniforms
+});
+
 export const LambertShading = () => {
-  const shaderMaterialRef = useRef<RawShaderMaterial>(null);
-  const uniformsRef = useRef<any>({
-    color: { value: surfaceColor },
-    lightCount: {
-      value: 0
-    },
-    lightPositions: {
-      value: []
-    },
-    lightColors: {
-      value: []
-    }
-  });
-  const [lightsGroup, setLightsGroup] = useState<Group | null>(null);
-
-  useLayoutEffect(() => {
-    if (!lightsGroup || lightsGroup.children.length) return;
-
-    uniformsRef.current.lightCount.value = lightsGroup.children.length;
-    uniformsRef.current.lightPositions.value = lightsGroup.children.map(
-      (light) => light.position
-    );
-    uniformsRef.current.lightColors.value = lightsGroup.children.map((light) => {
-      const mesh = light as Mesh;
-      const material = mesh.material as MeshBasicMaterial;
-      return new Vector3(...material.color.toArray());
-    });
-
-    shaderMaterialRef.current?.dispose();
-
-    if (shaderMaterialRef.current) {
-      shaderMaterialRef.current.needsUpdate = true;
-      shaderMaterialRef.current.uniformsNeedUpdate = true;
-    }
-  }, [lightsGroup, lightsGroup?.children.length]);
-
   return (
     <Canvas>
+      {lights.map(({ position, color }) => (
+        <mesh position={position}>
+          <sphereGeometry args={[0.1, 32, 32]} />
+          <meshBasicMaterial color={color} />
+        </mesh>
+      ))}
       <OrbitControls />
-      <group ref={(group) => setLightsGroup(group)}>
-        <mesh position={[1, 1, 0]}>
-          <sphereGeometry args={[0.1, 32, 32]} />
-          <meshBasicMaterial color="red" />
-        </mesh>
-        <mesh position={[-1, 1, 0]}>
-          <sphereGeometry args={[0.1, 32, 32]} />
-          <meshBasicMaterial color="green" />
-        </mesh>
-        <mesh position={[-1, -1, 0]}>
-          <sphereGeometry args={[0.1, 32, 32]} />
-          <meshBasicMaterial color="blue" />
-        </mesh>
-        <mesh position={[1, -1, 0]}>
-          <sphereGeometry args={[0.1, 32, 32]} />
-          <meshBasicMaterial color="yellow" />
-        </mesh>
-      </group>
-      {lightsGroup && (
-        <mesh>
-          <dodecahedronGeometry args={[1, 1]} />
-          <rawShaderMaterial
-            ref={shaderMaterialRef}
-            fragmentShader={Fragment}
-            vertexShader={Vertex}
-            uniforms={uniformsRef.current}
-          ></rawShaderMaterial>
-        </mesh>
-      )}
+      <mesh>
+        <sphereGeometry args={[1]} />
+        <primitive object={material} attach="material" />
+      </mesh>
     </Canvas>
   );
 };
