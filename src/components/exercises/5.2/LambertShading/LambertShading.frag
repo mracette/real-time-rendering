@@ -22,10 +22,8 @@ void main()	{
         vec3 lightPosition = normalize(lightPositions[i]);
         vec3 lightColor = lightColors[i];
         float l = clamp(dot(normal, lightPosition), 0.0, 1.0);
-        color = color + lightColor * l;
-        // color = mix(color, lightColor, l);
+        color = mix(color, lightColor, l);
     }
-
 
     gl_FragColor = vec4( color, 1.0 );
 
