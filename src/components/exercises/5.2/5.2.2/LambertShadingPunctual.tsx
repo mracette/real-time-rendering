@@ -1,46 +1,53 @@
 import { OrbitControls } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
-import { equilateralTriangle } from 'crco-utils';
-import { memo, useMemo } from 'react';
-import { Color, IUniform, RawShaderMaterial, Vector3 } from 'three';
+import { useFrame } from '@react-three/fiber';
+import { memo, useMemo, useRef } from 'react';
+import { Color, Group, IUniform, Matrix4, Mesh, Vector3 } from 'three';
 import Fragment from './LambertShadingPunctual.frag';
 import Vertex from './LambertShadingPunctual.vert';
 
 const surfaceColor = new Color('black');
-
-// Flip for Y-up orientation
-const triangle = equilateralTriangle(0, 0, 3).map(([x, y]) => new Vector3(x, -y, 0));
-
-interface BasicLight {
-  position: Vector3;
-  color: Color;
-}
-
-const lights: BasicLight[] = [
-  {
-    position: triangle[0],
-    color: new Color(1, 0, 0)
-  },
-  {
-    position: triangle[1],
-    color: new Color(0, 1, 0)
-  },
-  {
-    position: triangle[2],
-    color: new Color(0, 0, 1)
-  }
-];
+const lightColors = [new Color(1, 0, 0), new Color(0, 1, 0), new Color(0, 0, 1)];
 
 export const LambertShadingPunctual = () => {
+  const lightsRef = useRef<Group>(null);
+
   const uniforms = useMemo<Record<string, IUniform>>(
     () => ({
       color: { value: surfaceColor },
-      lightCount: { value: lights.length },
-      lightPositions: { value: lights.map(({ position }) => position.toArray()).flat(1) },
-      lightColors: { value: lights.map(({ color }) => color.toArray()).flat(1) }
+      lightCount: { value: lightColors.length },
+      lightPositions: {
+        value: new Array(lightColors.length * 3).fill(0)
+      },
+      lightColors: { value: lightColors.map((color) => color.toArray()).flat(1) }
     }),
     []
   );
+
+  useFrame(({ clock }, delta) => {
+    if (!lightsRef.current) return;
+
+    lightsRef.current.rotateZ(delta * 0.1);
+    lightsRef.current.rotateY(delta * 0.5);
+
+    lightsRef.current.children.forEach((mesh, i, array) => {
+      const translateX = Math.sin(
+        clock.elapsedTime + (Math.PI * 2 * (i % array.length)) / array.length
+      );
+
+      const translation = new Matrix4();
+      translation.makeTranslation(2.5 + translateX, 0, 0);
+
+      mesh.matrix.makeRotationZ(Math.PI * 2 * (i / array.length));
+      mesh.matrix.multiply(translation);
+
+      const target = new Vector3();
+      mesh.getWorldPosition(target);
+
+      uniforms.lightPositions.value[i * 3] = target.x;
+      uniforms.lightPositions.value[i * 3 + 1] = target.y;
+      uniforms.lightPositions.value[i * 3 + 2] = target.z;
+    });
+  });
 
   // Three.js doesn't support updating the uniforms object after the initial render, so if it changes we need to create a new material.
   // Practically speaking, this allows code changes to the uniforms to be picked up by hot reloading.
@@ -53,18 +60,20 @@ export const LambertShadingPunctual = () => {
   ));
 
   return (
-    <Canvas>
-      {lights.map(({ position, color }) => (
-        <mesh position={position}>
-          <sphereGeometry args={[0.1, 32, 32]} />
-          <meshBasicMaterial color={color} />
-        </mesh>
-      ))}
+    <>
+      <group ref={lightsRef}>
+        {lightColors.map((color, i) => (
+          <mesh key={i} matrixAutoUpdate={false}>
+            <sphereGeometry args={[0.1, 32, 32]} />
+            <meshBasicMaterial color={color} />
+          </mesh>
+        ))}
+      </group>
       <OrbitControls />
       <mesh>
         <sphereGeometry args={[1]} />
         <ShaderMaterial uniforms={uniforms} />
       </mesh>
-    </Canvas>
+    </>
   );
 };

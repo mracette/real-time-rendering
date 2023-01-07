@@ -1,3 +1,4 @@
+import { Canvas } from '@react-three/fiber';
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { GoochShading } from './components/exercises/5.1/GoochShading/GoochShading';
@@ -16,19 +17,31 @@ export const pages: Page[] = [
     chapter: '5.1',
     name: 'Gooch Shading',
     path: '/gooch-shading',
-    element: <GoochShading />
+    element: (
+      <Canvas>
+        <GoochShading />
+      </Canvas>
+    )
   },
   {
     chapter: '5.2.1',
     name: 'Lambert Shading - Directional',
     path: '/lambert-shading-directional',
-    element: <LambertShadingDirectional />
+    element: (
+      <Canvas>
+        <LambertShadingDirectional />
+      </Canvas>
+    )
   },
   {
     chapter: '5.2.2',
     name: 'Lambert Shading - Punctual',
     path: '/lambert-shading-punctual',
-    element: <LambertShadingPunctual />
+    element: (
+      <Canvas>
+        <LambertShadingPunctual />
+      </Canvas>
+    )
   }
 ];
 

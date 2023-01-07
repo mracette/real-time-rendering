@@ -22,6 +22,9 @@ varying vec3 vNormal;
 // Light intensity at a set distance
 #define r0 1.0
 
+// Distance after which the light intensity is zero
+#define rMax 3.0
+
 void main()	{
 
     vec3 normal = normalize( vNormal );
@@ -39,7 +42,9 @@ void main()	{
         // CryEngine and Frostbite approach
         // float attenuation = pow(r0 / max(r, rMin), 2.0);
 
-        vec3 lightColor = attenuation * lightColors[i];
+        float windowFactor = pow(max(1.0 - pow((r / rMax), 4.0), 0.0), 2.0);
+
+        vec3 lightColor = attenuation * windowFactor * lightColors[i];
         float l = clamp(dot(normal, lightPosition), 0.0, 1.0);
         color = mix(color, lightColor, l);
     }

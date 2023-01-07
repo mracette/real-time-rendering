@@ -53,7 +53,7 @@ export const LambertShadingDirectional = () => {
   ));
 
   return (
-    <Canvas>
+    <>
       {lights.map(({ position, color }) => (
         <mesh position={position}>
           <sphereGeometry args={[0.1, 32, 32]} />
@@ -65,6 +65,6 @@ export const LambertShadingDirectional = () => {
         <sphereGeometry args={[1]} />
         <ShaderMaterial uniforms={uniforms} />
       </mesh>
-    </Canvas>
+    </>
   );
 };

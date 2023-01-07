@@ -6,7 +6,7 @@ import Vertex from './GoochShading.vert';
 
 export const GoochShading = () => {
   return (
-    <Canvas>
+    <>
       <OrbitControls />
       <mesh>
         <dodecahedronGeometry args={[1, 1]} />
@@ -20,6 +20,6 @@ export const GoochShading = () => {
           }}
         />
       </mesh>
-    </Canvas>
+    </>
   );
 };
