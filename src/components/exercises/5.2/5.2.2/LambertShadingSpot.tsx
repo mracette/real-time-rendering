@@ -64,14 +64,14 @@ export const LambertShadingSpot = () => {
       <group ref={lightsRef}>
         {lightColors.map((color, i) => (
           <mesh key={i} matrixAutoUpdate={false}>
-            <sphereGeometry args={[0.1, 32, 32]} />
+            <sphereGeometry args={[0.1]} />
             <meshBasicMaterial color={color} />
           </mesh>
         ))}
       </group>
       <OrbitControls />
       <mesh>
-        <sphereGeometry args={[1]} />
+        <sphereGeometry args={[1, 32, 32]} />
         <ShaderMaterial uniforms={uniforms} />
       </mesh>
     </>

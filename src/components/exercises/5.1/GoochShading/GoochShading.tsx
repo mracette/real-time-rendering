@@ -9,7 +9,7 @@ export const GoochShading = () => {
     <>
       <OrbitControls />
       <mesh>
-        <dodecahedronGeometry args={[1, 1]} />
+        <sphereGeometry args={[1, 32, 32]} />
         <rawShaderMaterial
           fragmentShader={Fragment}
           vertexShader={Vertex}

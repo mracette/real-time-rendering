@@ -62,7 +62,7 @@ export const LambertShadingDirectional = () => {
       ))}
       <OrbitControls />
       <mesh>
-        <sphereGeometry args={[1]} />
+        <sphereGeometry args={[1, 32, 32]} />
         <ShaderMaterial uniforms={uniforms} />
       </mesh>
     </>

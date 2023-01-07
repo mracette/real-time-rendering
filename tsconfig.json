@@ -23,6 +23,6 @@
   "include": [
     "src",
     "src/**/*.frag",
-    "src/**/*.vert", "src/components/exercises/5.2/5.2.2/LambertShadingSpot/.tsx",
+    "src/**/*.vert"
   ]
 }
