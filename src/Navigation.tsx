@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { GoochShading } from './components/exercises/5.1/GoochShading/GoochShading';
 import { LambertShadingDirectional } from './components/exercises/5.2/5.2.1/LambertShadingDirectional';
 import { LambertShadingPunctual } from './components/exercises/5.2/5.2.2/LambertShadingPunctual';
+import { LambertShadingSpot } from './components/exercises/5.2/5.2.2/LambertShadingSpot';
 
 interface Page {
   name: string;
@@ -40,6 +41,16 @@ export const pages: Page[] = [
     element: (
       <Canvas>
         <LambertShadingPunctual />
+      </Canvas>
+    )
+  },
+  {
+    chapter: '5.2.2',
+    name: 'Lambert Shading - Spot',
+    path: '/lambert-shading-spot',
+    element: (
+      <Canvas>
+        <LambertShadingSpot />
       </Canvas>
     )
   }

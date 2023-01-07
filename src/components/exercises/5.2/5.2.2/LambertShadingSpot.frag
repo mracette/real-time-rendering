@@ -10,6 +10,8 @@ varying vec3 vPosition;
 varying vec4 vColor;
 varying vec3 vNormal;
 
+#define PI 3.14159
+
 // GLSL needs a fixed array size
 #define maxLights 10
 
@@ -25,6 +27,12 @@ varying vec3 vNormal;
 // Distance after which the light intensity is zero
 #define rMax 3.0
 
+// Penumbral angle
+const float thetaP = PI / 6.0;
+
+// Umbra angle
+const float thetaU = PI / 5.0;
+
 void main()	{
 
     vec3 normal = normalize( vNormal );
@@ -36,16 +44,17 @@ void main()	{
         float r = length(lightPositions[i] - vPosition);
         vec3 lightPosition = positionTolightPosition / r;
 
-        // Distance attenuation (Unreal approach)
+        // Distance attenuation
         float distanceFactor = pow((r0 / (r + epsilon)), 2.0);
 
-        // Distance attenuation (CryEngine and Frostbite approach)
-        // float distanceFactor = pow(r0 / max(r, rMin), 2.0);
+        // Angular attenuation (spotlight)
+        float thetaS = dot(normal, lightPosition);
+        float positionalFactor = (thetaS - cos(thetaU)) / (cos(thetaP) - cos(thetaU));
 
         // Window attenuation (performance optimization)
         float windowFactor = pow(max(1.0 - pow((r / rMax), 4.0), 0.0), 2.0);
 
-        vec3 lightColor = distanceFactor * windowFactor * lightColors[i];
+        vec3 lightColor = distanceFactor * windowFactor * positionalFactor * lightColors[i];
         float l = clamp(dot(normal, lightPosition), 0.0, 1.0);
         color = mix(color, lightColor, l);
     }
