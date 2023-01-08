@@ -58,7 +58,7 @@ export const RotationLightScene = ({ fragmentShader, vertexShader }: Props) => {
   // Three.js doesn't support updating the uniforms object after the initial render, so if it changes we need to create a new material.
   // Practically speaking, this allows code changes to the uniforms to be picked up by hot reloading.
   const ShaderMaterial = memo(({ uniforms }: { uniforms: Record<string, IUniform> }) => (
-    <rawShaderMaterial
+    <shaderMaterial
       fragmentShader={fragmentShader}
       vertexShader={vertexShader}
       uniforms={uniforms}

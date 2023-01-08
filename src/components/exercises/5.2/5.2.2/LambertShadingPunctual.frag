@@ -7,7 +7,6 @@ uniform int lightCount;
 uniform vec3 surfaceColor;
 
 varying vec3 vPosition;
-varying vec4 vColor;
 varying vec3 vNormal;
 
 // GLSL needs a fixed array size

@@ -2,10 +2,7 @@ precision mediump float;
 precision mediump int;
 
 uniform vec3 lightDirection;
-uniform vec3 cameraPosition;
 
-varying vec3 vPosition;
-varying vec4 vColor;
 varying vec3 vNormal;
 
 #define cool vec3(0.0, 0.0, 0.55)
