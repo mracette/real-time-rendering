@@ -5,7 +5,7 @@ import { GoochShading } from './components/exercises/5.1/GoochShading/GoochShadi
 import { LambertShadingDirectional } from './components/exercises/5.2/5.2.1/LambertShadingDirectional';
 import { LambertShadingPunctual } from './components/exercises/5.2/5.2.2/LambertShadingPunctual';
 import { LambertShadingSpot } from './components/exercises/5.2/5.2.2/LambertShadingSpot';
-import { NoiseComponent } from './components/explorations/Noise';
+import { Saturn } from './components/explorations/saturn/Saturn';
 
 interface Page {
   name: string;
@@ -59,7 +59,7 @@ export const pages: Page[] = [
     chapter: 'explorations',
     name: 'Noise',
     path: '/noise',
-    element: <NoiseComponent />
+    element: <Saturn />
   }
 ];
 
